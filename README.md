@@ -1,39 +1,118 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# API Helper
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A lightweight Flutter package that simplifies REST API operations by providing a clean, intuitive interface for making HTTP requests. This package streamlines common API tasks like fetching, updating, and deleting data while handling JSON parsing and error management.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Simple and clean API for HTTP operations
+- Built-in JSON parsing and error handling
+- Support for:
+    - Fetching list data (GET)
+    - Fetching data with query parameters (GET)
+    - Updating data (PUT)
+    - Deleting data (DELETE)
+- Automatic status code handling
+- Query parameter support
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add this package to your Flutter project by adding the following to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  api_helper: ^1.0.0
+```
+
+Install the package by running:
+```bash
+flutter pub get
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Initialize the API Helper with your base URL:
 
 ```dart
-const like = 'sample';
+final apiHelper = ApiHelper(rootApi: 'https://api.example.com');
+```
+
+### Fetch a list of items
+```dart
+try {
+  List<dynamic> users = await apiHelper.fetchAllData('/users');
+  print(users);
+} catch (e) {
+  print('Error: $e');
+}
+```
+
+### Fetch with query parameters
+```dart
+try {
+  final queryParams = {
+    'page': '1',
+    'limit': '10',
+  };
+  
+  Map<String, dynamic> result = await apiHelper.fetchDataWithQuery(
+    '/users',
+    queryParams
+  );
+  print(result);
+} catch (e) {
+  print('Error: $e');
+}
+```
+
+### Update data
+```dart
+try {
+  final updates = {
+    'name': 'John Doe',
+    'email': 'john@example.com'
+  };
+  
+  Map<String, dynamic> result = await apiHelper.editData(
+    '/users/1',
+    updates
+  );
+  print(result);
+} catch (e) {
+  print('Error: $e');
+}
+```
+
+### Delete data
+```dart
+try {
+  bool success = await apiHelper.deleteData('/users/1');
+  if (success) {
+    print('Successfully deleted');
+  }
+} catch (e) {
+  print('Error: $e');
+}
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+### Minimum Requirements
+- Dart SDK: >=3.0.0 <4.0.0
+- Flutter: >=3.0.0
+
+### Dependencies
+- http: ^1.1.0
+
+### Error Handling
+The package throws exceptions with status codes when requests fail. Always wrap API calls in try-catch blocks for proper error handling.
+
+### Issues and Feedback
+Please file issues, bugs, or feature requests in our [issue tracker](link-to-your-repository-issues).
+
+### Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+### License
+```
+MIT License - Copyright (c) 2024 YOUR_NAME
+```
