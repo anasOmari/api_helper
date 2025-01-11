@@ -1,6 +1,6 @@
 name: api_request_helper
 description: "A package for fetching, editing, and deleting data using http"
-version: 0.1.1
+version: 0.1.2
 
 homepage: https://github.com/anasomari/api_helper
 

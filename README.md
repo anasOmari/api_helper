@@ -20,7 +20,7 @@ Add this package to your Flutter project by adding the following to your `pubspe
 
 ```yaml
 dependencies:
-  api_request_helper: ^0.1.0
+  api_request_helper: ^0.1.2
 ```
 
 Install the package by running:
