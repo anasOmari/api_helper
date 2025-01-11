@@ -36,6 +36,21 @@ class ApiHelper {
     }
   }
 
+  Future<dynamic> fetchData(String endpoint) async {
+    try {
+      final Uri url = Uri.parse('$rootApi$endpoint');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        throw Exception('Failed to load data: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching data: $e');
+    }
+  }
+
 //Edit data using PUT or PATCH request
   Future<Map<String, dynamic>> editData(
       String endpoint, Map<String, dynamic> data) async {
