@@ -1,59 +1,80 @@
-# API Helper
+API Helper
 
-A lightweight Flutter package that simplifies REST API operations by providing a clean, intuitive interface for making HTTP requests. This package streamlines common API tasks like fetching, updating, and deleting data while handling JSON parsing and error management.
+A comprehensive Flutter package that simplifies REST API operations by providing an intuitive interface for making HTTP requests. This package streamlines common API tasks like fetching, updating, deleting, and visualizing API data, while incorporating features like authentication, retry logic, and WebSocket support.
 
-## Features
+Features
 
-- Simple and clean API for HTTP operations
-- Built-in JSON parsing and error handling
-- Support for:
-    - Fetching list data (GET)
-    - Fetching data with query parameters (GET)
-    - Updating data (PUT)
-    - Deleting data (DELETE)
-- Automatic status code handling
-- Query parameter support
+Clean and extensible API for HTTP operations.
 
-## Getting started
+Built-in JSON parsing, error handling, and metrics tracking.
 
-Add this package to your Flutter project by adding the following to your `pubspec.yaml`:
+Token-based authentication support.
 
-```yaml
+Support for:
+
+Fetching list data (GET).
+
+Fetching data with query parameters (GET).
+
+Updating data (PUT).
+
+Deleting data (DELETE).
+
+Fetching paginated data.
+
+Visualizing API data hierarchy.
+
+Request retry logic with exponential backoff.
+
+Configurable timeout and dynamic environment switching.
+
+WebSocket support for real-time data streaming.
+
+Getting Started
+
+Add this package to your Flutter project by adding the following to your pubspec.yaml:
+
 dependencies:
-  api_request_helper: ^0.1.3
-```
+  api_request_helper: ^0.1.4
 
 Install the package by running:
-```bash
+
 flutter pub get
-```
 
-## Usage
+Usage
 
-Initialize the API Helper with your base URL:
+Initialize the API Helper
 
-```dart
-final apiHelper = ApiHelper(rootApi: 'https://api.example.com');
-```
+Initialize the ApiHelper with your base URLs for different environments:
 
-### Fetch a list of items
-```dart
+final apiHelper = ApiHelper(
+  environments: {
+    'development': 'https://dev.api.example.com',
+    'staging': 'https://staging.api.example.com',
+    'production': 'https://api.example.com',
+  },
+  currentEnvironment: 'production',
+);
+
+apiHelper.setAuthToken('your-auth-token');
+
+Fetch a List of Items
+
 try {
   List<dynamic> users = await apiHelper.fetchAllData('/users');
   print(users);
 } catch (e) {
   print('Error: $e');
 }
-```
 
-### Fetch with query parameters
-```dart
+Fetch Data with Query Parameters
+
 try {
   final queryParams = {
     'page': '1',
     'limit': '10',
   };
-  
+
   Map<String, dynamic> result = await apiHelper.fetchDataWithQuery(
     '/users',
     queryParams
@@ -62,16 +83,15 @@ try {
 } catch (e) {
   print('Error: $e');
 }
-```
 
-### Update data
-```dart
+Update Data
+
 try {
   final updates = {
     'name': 'John Doe',
     'email': 'john@example.com'
   };
-  
+
   Map<String, dynamic> result = await apiHelper.editData(
     '/users/1',
     updates
@@ -80,10 +100,9 @@ try {
 } catch (e) {
   print('Error: $e');
 }
-```
 
-### Delete data
-```dart
+Delete Data
+
 try {
   bool success = await apiHelper.deleteData('/users/1');
   if (success) {
@@ -92,27 +111,66 @@ try {
 } catch (e) {
   print('Error: $e');
 }
-```
 
-## Additional information
+Fetch Paginated Data
 
-### Minimum Requirements
-- Dart SDK: >=3.0.0 <4.0.0
-- Flutter: >=3.0.0
+try {
+  List<dynamic> paginatedData = await apiHelper.fetchPaginatedData('/users', 10, 0);
+  print(paginatedData);
+} catch (e) {
+  print('Error: $e');
+}
 
-### Dependencies
-- http: ^1.1.0
+Generate Hierarchy Map of API Data
 
-### Error Handling
-The package throws exceptions with status codes when requests fail. Always wrap API calls in try-catch blocks for proper error handling.
+try {
+  String hierarchy = await apiHelper.generateHierarchyMap('/users');
+  print(hierarchy);
+} catch (e) {
+  print('Error: $e');
+}
 
-### Issues and Feedback
-Please file issues, bugs, or feature requests in our [issue tracker](link-to-your-repository-issues).
+WebSocket Support
 
-### Contributing
+final wsHelper = WebSocketHelper('wss://api.example.com/socket');
+wsHelper.stream.listen((event) {
+  print('New message: $event');
+});
+
+Additional Information
+
+Minimum Requirements
+
+Dart SDK: >=3.0.0 <4.0.0
+
+Flutter: >=3.0.0
+
+Dependencies
+
+http: ^1.1.0
+
+web_socket_channel: ^2.2.0
+
+Error Handling
+
+The package throws custom exceptions (ApiException) with detailed messages and status codes. Always wrap API calls in try-catch blocks for proper error handling.
+
+Metrics Tracking
+
+Track API usage and performance:
+
+print('Total Requests: ${apiHelper._metrics.totalRequests}');
+print('Average Latency: ${apiHelper._metrics.averageLatency} ms');
+
+Issues and Feedback
+
+Please file issues, bugs, or feature requests in our issue tracker.
+
+Contributing
+
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-### License
-```
-MIT License - Copyright (c) 2024 YOUR_NAME
-```
+License
+
+MIT License - Copyright (c) 2024 ANAS_OAMRI
+

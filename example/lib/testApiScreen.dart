@@ -18,7 +18,7 @@ class _TestapiscreenState extends State<Testapiscreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    apiHelper = ApiHelper(rootApi: 'https://jsonplaceholder.typicode.com');
+    apiHelper = ApiHelper(environments: {'test': 'https://jsonplaceholder.typicode.com'},currentEnvironment: 'test');
 
     fetchData();
   }
@@ -52,15 +52,22 @@ class _TestapiscreenState extends State<Testapiscreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (context, index) {
-                final item = data[index];
-                return ListTile(
-                  title: Text(item['title']),
-                  subtitle: Text("ID: ${item['id']}"),
-                );
-              }),
+          : Column(
+            children: [
+              Container(
+                height: 500,
+                child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      final item = data[index];
+                      return ListTile(
+                        title: Text(item['title']),
+                        subtitle: Text("ID: ${item['id']}"),
+                      );
+                    }),
+              ),
+            ],
+          ),
     );
   }
 }
